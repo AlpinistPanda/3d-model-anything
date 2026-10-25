@@ -7,10 +7,11 @@ usage: bundle_to_room.py <bundle_dir> [--room N] [-o room.json] [--plan plan.png
 Output JSON:
   transform  worldToRoom (column-major 4x4) + theta/center/floorY it was built from
   polygon    floor outline [[x, z], ...] in room coords (counter-clockwise seen from above)
-  walls      [{index, a, b, height, origin, u, n, length, openings: [{kind, u0, u1, v0, v1}]}]
+  walls      [{index, id, a, b, height, origin, u, n, length, openings: [{id, kind, u0, u1, v0, v1}]}]
              origin = interior face, left end, floor; u runs left→right seen from inside;
              n points into the room; u × up = n (the WallDef convention in shell.ts)
-  objects    [{category, center, size, rotY, front}]  (rotY turns local +z to `front`)
+             id = RoomPlan identifier (null when the export has none)
+  objects    [{id, category, confidence, center, size, rotY, front}]  (rotY turns local +z to `front`)
   photos     [{file, position, forward, up, fovY, aspect}] in room coords, upright (portrait) framing
 --plan draws the result with wall indices and u ticks every 0.5 m for annotating.
 """
@@ -133,13 +134,13 @@ def main():
             ew, eh = e['dimensions'][0], e['dimensions'][1]
             v0 = ec[1] - eh / 2
             openings.append({
-                'kind': kind,
+                'id': e.get('identifier'), 'kind': kind,
                 'u0': round(du - ew / 2, 3), 'u1': round(du + ew / 2, 3),
                 'v0': 0.0 if v0 < 0.06 else round(v0, 3), 'v1': round(ec[1] + eh / 2, 3),
                 'isOpen': bool(e['category'].get('door', {}).get('isOpen', False)) if kind == 'door' else None,
             })
         out_walls.append({
-            'index': i,
+            'index': i, 'id': w.get('identifier'),
             'a': [round(origin[0], 4), round(origin[2], 4)],
             'b': [round(b[0], 4), round(b[1], 4)],
             'height': round(height, 3),
@@ -158,7 +159,8 @@ def main():
         ctr = to_room(col(m, 3))
         f = dir_room(col(m, 2))
         objects.append({
-            'category': next(iter(o['category'])),
+            'id': o.get('identifier'), 'category': next(iter(o['category'])),
+            'confidence': next(iter(o.get('confidence') or {}), None),
             'center': [round(v, 3) for v in ctr],
             'size': [round(v, 3) for v in o['dimensions']],
             'rotY': round(math.atan2(f[0], f[2]), 4),

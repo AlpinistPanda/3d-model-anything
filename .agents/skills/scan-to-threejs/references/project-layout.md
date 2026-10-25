@@ -6,6 +6,7 @@ The 3d-model-anything repository provides a runnable viewer and iPhone app:
 - `apps/room-viewer/`: viewer and matched-camera capture page.
 - `packages/room-runtime/`: geometry helpers, wall builders, materials, lighting, rendering and types.
 - `packages/room-physics/`: optional interactive physics.
+- `packages/home-model/`: the `home-model/1` schema and measurements (built by `home_from_capture.py`).
 - `demos/<id>/`: modeled room implementations; register in `demos/index.ts`.
 - `data/demos/<id>/`: converted room measurements.
 - `data/web-assets/`: browser assets, served at the URL root.

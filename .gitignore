@@ -12,6 +12,7 @@ data/captures-in/
 data/captures/
 data/recordings/
 data/scans/
+data/homes/
 apps/house-capture/release/screenshots/
 
 HouseCapture.xcodeproj/

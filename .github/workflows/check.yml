@@ -19,3 +19,4 @@ jobs:
           python-version: '3.12'
       - run: pip install Pillow
       - run: python3 .agents/skills/scan-to-threejs/scripts/test_house_import.py
+      - run: python3 .agents/skills/scan-to-threejs/scripts/test_home_from_capture.py

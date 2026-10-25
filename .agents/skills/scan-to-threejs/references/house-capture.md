@@ -44,6 +44,10 @@ back to room space. The current viewer displays individual rooms; this importer 
 combined-house viewer, merge meshes, align unknown scans, deduplicate shared walls or combine old
 photos across sessions. History is kept in the original export; only active scans are exported.
 
+For a semantic whole-house model (levels, spaces, walls with openings, elements, paired
+partitions with measured thickness), run `home_from_capture.py` on the same house folder; it writes
+`home-model/1` JSON described in `packages/home-model/`. Unplaced rooms are listed, not guessed.
+
 ## Current session contents
 
 ```text
